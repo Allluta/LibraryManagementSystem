@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Lista Książek</title>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" type="text/css" href="/styles.css">
+</head>
+<body>
+
+<div class="navbar">
+  <a href="/">Strona Główna</a>
+  <span><a href="/logout">Wyloguj się</a></span>
+</div>
+
+<div class="container">
+  <h1>Lista Książek</h1>
+  <table>
+    <thead>
+    <tr>
+      <th>Tytuł</th>
+      <th>Autor</th>
+      <th>Rok Wydania</th>
+      <th>Akcja</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="book : ${books}">
+      <td th:text="${book.title}">Tytuł</td>
+      <td th:text="${book.author}">Autor</td>
+      <td th:text="${book.publicationYear}">Rok Wydania</td>
+      <td>
+        <button th:text="'Wypożycz'" th:onclick="'rentBook(' + ${book.id} + ')'">Wypożycz</button>
+        <button th:text="'Kup'" th:onclick="'buyBook(' + ${book.id} + ')'">Kup</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="container">
+  <h1>Twoje Książki</h1>
+  <table>
+    <thead>
+    <tr>
+      <th>Tytuł</th>
+      <th>Autor</th>
+      <th>Rok Wydania</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="book : ${userBooks}">
+      <td th:text="${book.title}">Tytuł</td>
+      <td th:text="${book.author}">Autor</td>
+      <td th:text="${book.publicationYear}">Rok Wydania</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<script>
+    function rentBook(bookId) {
+      fetch(`/books/rent?bookId=${bookId}`, {
+        method: 'POST'
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          alert('Książka została wypożyczona!');
+          location.reload();
+        } else {
+          alert('Nie udało się wypożyczyć książki.');
+        }
+      });
+    }
+
+    function buyBook(bookId) {
+      window.location.href = `/books/payment/${bookId}`;
+    }
+  </script>
+</body>
+</html>

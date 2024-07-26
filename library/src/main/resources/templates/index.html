@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Rejestracja</title>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" type="text/css" href="/styles.css">
+  <script>
+    async function registerUser(event) {
+      event.preventDefault();
+      const form = event.target;
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+
+      const messageElement = document.getElementById('message');
+      messageElement.textContent = '';
+
+      try {
+        const response = await fetch('/users/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        });
+
+        if (response.ok) {
+          const registeredUser = await response.json();
+          console.log('Użytkownik zarejestrowany:', registeredUser);
+          messageElement.textContent = 'Rejestracja przebiegła pomyślnie, możesz się zalogować';
+          messageElement.className = 'success-message';
+          form.reset();
+        } else {
+          const error = await response.text();
+          console.error('Błąd rejestracji:', error);
+          messageElement.textContent = 'Błąd rejestracji: ' + error;
+          messageElement.className = 'error-message';
+        }
+      } catch (error) {
+        console.error('Nieoczekiwany błąd:', error);
+        messageElement.textContent = 'Nieoczekiwany błąd: ' + error.message;
+        messageElement.className = 'error-message';
+      }
+    }
+  </script>
+</head>
+<body>
+<div class="container">
+  <h1>Rejestracja</h1>
+  <form id="registerForm" onsubmit="registerUser(event)">
+    <label for="name">Imię:</label>
+    <input type="text" id="name" name="name" required>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required>
+
+    <label for="password">Hasło:</label>
+    <input type="password" id="password" name="password" required>
+
+    <label for="phoneNumber">Numer telefonu:</label>
+    <input type="text" id="phoneNumber" name="phoneNumber">
+
+    <button type="submit" class="btn btn-secondary">Utwórz konto</button>
+  </form>
+  <p id="message"></p>
+</div>
+</body>
+</html>
