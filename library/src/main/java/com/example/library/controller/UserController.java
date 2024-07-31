@@ -25,6 +25,8 @@ public class UserController {
     private JwtTokenProvider jwtTokenProvider;
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
+    @Autowired
+    private HttpSession session;
     public UserController(UserService userService, PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider) {
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
@@ -77,12 +79,24 @@ public class UserController {
 
 
     @GetMapping("/user/books")
-    public String userBooks(Model model, @RequestParam String email) {
-        User user = userService.findByEmail(email);
-        model.addAttribute("books", user.getBorrowedBooks());
-        return "userBooks";
+    public String userBooks(Model model, HttpSession session) {
+        Long userId = (Long) session.getAttribute("userId");
+        if (userId != null) {
+            User user = userService.findById(userId);
+
+            model.addAttribute("purchasedBooks", user.getPurchasedBooks());
+            return "userPurchasedBooks";
+        }
+        return "redirect:/login";
     }
 
 
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(HttpSession session) {
+        logger.info("Wylogowywanie użytkownika: " + session.getAttribute("userId"));
+        session.invalidate();
+        return ResponseEntity.ok("Wylogowano pomyślnie");
+    }
 }
 

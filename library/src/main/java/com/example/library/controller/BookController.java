@@ -64,6 +64,16 @@ public class BookController {
             return ResponseEntity.status(500).body("{\"success\": false, \"message\": \"" + e.getMessage() + "\"}");
         }
     }
+    @GetMapping("/user/books")
+    public String userBooks(Model model, HttpSession session) {
+        Long userId = (Long) session.getAttribute("userId");
+        if (userId != null) {
+            User user = userService.findById(userId);
+            model.addAttribute("books", user.getPurchasedBooks());
+            return "userPurchasedBooks";
+        }
+        return "redirect:/login";
+    }
     @GetMapping("/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();

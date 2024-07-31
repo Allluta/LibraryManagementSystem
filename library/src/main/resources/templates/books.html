@@ -9,7 +9,7 @@
 
 <div class="navbar">
   <a href="/">Strona Główna</a>
-  <span><a href="/logout">Wyloguj się</a></span>
+  <span><a href="#" onclick="logout()">Wyloguj się</a></span>
 </div>
 
 <div class="container">
@@ -76,6 +76,24 @@
     function buyBook(bookId) {
       window.location.href = `/books/payment/${bookId}`;
     }
-  </script>
+
+    function logout() {
+      fetch('/users/logout', {
+        method: 'POST',
+        credentials: 'include' // to make sure cookies (if any) are sent with the request
+      })
+      .then(response => {
+        if (response.ok) {
+          localStorage.removeItem('token'); // Usunięcie tokenu z localStorage
+          window.location.href = '/login'; // Przekierowanie na stronę logowania
+        } else {
+          alert('Błąd podczas wylogowywania');
+        }
+      })
+      .catch(error => {
+        console.error('Błąd sieci podczas wylogowywania:', error);
+      });
+    }
+</script>
 </body>
 </html>

@@ -29,6 +29,7 @@ public class WebSecurityConfiguration {
                 .authorizeHttpRequests(authz -> authz
                         .anyRequest().permitAll()
                 )
+
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 );

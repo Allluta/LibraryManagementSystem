@@ -1,6 +1,7 @@
 package com.example.library.service;
 
 import com.example.library.entity.User;
+import com.example.library.repository.UserBookPurchaseRepository;
 import com.example.library.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,6 +15,7 @@ public class UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
 
     public User registerUser(User user) {
         if (userRepository.findByEmail(user.getEmail()) != null) {
@@ -30,4 +32,6 @@ public class UserService {
     public User findById(Long id) {
         return userRepository.findById(id).orElse(null);
     }
+
+
 }

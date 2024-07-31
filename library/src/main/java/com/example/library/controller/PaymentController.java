@@ -50,13 +50,9 @@ public class PaymentController {
         com.stripe.Stripe.apiKey = stripeApiKey;
 
         try {
-
             Book book = bookService.getBookById(bookId);
             BigDecimal priceInZloty = book.getPrice();
-
-
             long amountInCents = priceInZloty.multiply(new BigDecimal("100")).longValue();
-
 
             Map<String, Object> chargeParams = new HashMap<>();
             chargeParams.put("amount", amountInCents);
@@ -67,14 +63,11 @@ public class PaymentController {
             RequestOptions requestOptions = RequestOptions.builder().setApiKey(stripeApiKey).build();
             Charge charge = Charge.create(chargeParams, requestOptions);
 
-
             Long userId = (Long) session.getAttribute("userId");
-
-
             bookService.buyBook(bookId, userId);
 
             redirectAttributes.addFlashAttribute("message", "Payment successful!");
-            return "redirect:/books?success";
+            return "redirect:/user/books";
 
         } catch (StripeException e) {
             e.printStackTrace();

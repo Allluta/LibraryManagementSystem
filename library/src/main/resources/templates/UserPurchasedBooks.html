@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Zakupione książki</title>
+</head>
+<body>
+<h1>Zakupione książkki</h1>
+<div th:if="${message}" th:text="${message}"></div>
+<div th:if="${error}" th:text="${error}"></div>
+<table>
+    <thead>
+    <tr>
+        <th>Tytuł</th>
+        <th>Autor</th>
+        <th>Rok publikacji</th>
+        <th>Cena</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="purchase : ${purchasedBooks}">
+        <td th:text="${purchase.book.title}"></td>
+        <td th:text="${purchase.book.author}"></td>
+        <td th:text="${purchase.book.publicationYear}"></td>
+        <td th:text="${purchase.book.price}"></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
