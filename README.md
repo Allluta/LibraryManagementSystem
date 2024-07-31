@@ -31,11 +31,9 @@ Prerequisites
 Installation
 
     Clone the repository:
-
-    sh
  
-git clone https://github.com/yourusername/library-management-system.git
-cd library-management-system
+    git clone https://github.com/yourusername/library-management-system.git
+  
 
 Set up the database:
 Configure your database settings in src/main/resources/application.properties.
