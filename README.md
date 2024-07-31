@@ -33,7 +33,7 @@ Installation
     Clone the repository:
 
     sh
-
+ 
 git clone https://github.com/yourusername/library-management-system.git
 cd library-management-system
 
@@ -47,15 +47,11 @@ properties
 
 stripe.api.key=your_stripe_api_key
 
-Build the project:
+ Build the project:
 
-sh
-
-mvn clean install
+    mvn clean install
 
 Run the application:
-
-sh
 
     mvn spring-boot:run
 
